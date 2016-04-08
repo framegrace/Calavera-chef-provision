@@ -1,1 +1,0 @@
-# Calavera-chef-provision
