@@ -42,20 +42,30 @@ subdomain = "#{domain}"
       #}
   #end
   
-  machine "espina.#{domain}" do
-      from_image 'espinav2'
-    recipe  "base::default"
-    recipe  "shared::default"
-    recipe  "java7::default"
-    recipe  "espina::default"
-    
-#    chef_server :chef_server_url => "chefzero://localhost:8889",:client_name => "espina.#{domain}"
+machine "espina.#{domain}" do
 
-      machine_options :docker_options => {
-        :volumes => ["/opt/Calavera-chef:/home/vagrant","/opt/Calavera-chef:/home/espina","/opt/Calavera-chef/shared:/mnt/shared"],
-        :command => '/sbin/my_init'
-      }
-  end
+ from_image "espina.#{domain}"
+ recipe  "base::default"
+ recipe  "shared::default"
+ recipe  "java7::default"
+ recipe  "espina::default"
+ chef_environment chef_env
+   machine_options :docker_options => {
+     #:base_image => {
+         #:name => 'phusion/baseimage',
+         #:hostname => "espina.#{domain}",
+         #:repository => 'phusion',
+         #:tag => '0.9.16',
+     #},
+    :env => {
+         "HOSTNAME" => "espina.#{domain}"
+      },
+   :volumes => ["/opt/Calavera-chef-provision:/home/vagrant","/opt/Calavera-chef-provision:/home/espina","/opt/Calavera-chef-provision/shared:/mnt/shared"],
+   :command => '/sbin/my_init'
+ }
+end
+
+
 #end
 
 # Launch Application servers in parallel

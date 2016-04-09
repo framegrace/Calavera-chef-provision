@@ -53,7 +53,7 @@ subdomain = "#{domain}"
         :volumes => ["/opt/Calavera-chef:/home/vagrant","/opt/Calavera-chef:/home/espina","/opt/Calavera-chef/shared:/mnt/shared"],
         :command => '/sbin/my_init'
       }
-    action :stop
+    action :destroy
   end
 #end
 
