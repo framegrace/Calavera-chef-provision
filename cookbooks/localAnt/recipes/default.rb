@@ -11,7 +11,7 @@
 # what if Ant is corrupted? can't test for a perfect install
 # downloading and reinstallilng is not that costly
 
-ant_version="1.9.5"
+ant_version="1.9.7"
 #execute echo "installing Ant"
 remote_file "/opt/apache-ant-#{ant_version}-bin.tar.gz" do
     source "http://mirror.nexcess.net/apache//ant/binaries/apache-ant-#{ant_version}-bin.tar.gz"

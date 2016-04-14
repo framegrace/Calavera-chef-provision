@@ -8,7 +8,7 @@ directory "/var/lib/jenkins/.ssh"  do
 end
 
 execute 'duplicate keys' do
-  cwd '/home/vagrant/.ssh'
+  cwd '/home/vagrant/shared/keys'
   command 'cp * /var/lib/jenkins/.ssh'   # this includes authorized_keys, don't think it does any good there
 end
 

@@ -1,5 +1,15 @@
 # brazos default
 # set up remote slave build server
+execute "apt-get-update-periodic" do
+  command "apt-get update"
+  ignore_failure true
+  #only_if do
+    #File.exists?('/var/lib/apt/periodic/update-success-stamp') &&
+    #File.mtime('/var/lib/apt/periodic/update-success-stamp') < Time.now - 86400
+  #end
+end
+
+package 'git'
 
 group 'jenkins'
 
@@ -16,7 +26,7 @@ directory "/home/jenkins/.ssh"  do
 end
 
 execute 'duplicate keys' do
-  cwd '/home/vagrant/.ssh'
+  cwd '/home/vagrant/shared/keys'
   command 'cp id_rsa* /home/jenkins/.ssh'   # includes authorized hosts
 end
 

@@ -1,5 +1,16 @@
 # set up central git repository server
 
+execute "apt-get-update-periodic" do
+  command "apt-get update"
+  ignore_failure true
+  #only_if do
+    #File.exists?('/var/lib/apt/periodic/update-success-stamp') &&
+    #File.mtime('/var/lib/apt/periodic/update-success-stamp') < Time.now - 86400
+  #end
+end
+
+package 'git'
+
 group 'git'
 
 group 'jenkins'
@@ -40,7 +51,7 @@ directory "/home/jenkins/.ssh"  do
 end
 
 execute 'Jenkins keys' do
-  cwd '/home/vagrant/.ssh'
+  cwd '/home/vagrant/shared/keys/'
   command 'cp * /home/jenkins/.ssh'  # this should include authorized keys. 
 end
 
