@@ -1,46 +1,44 @@
 #! /usr/bin/env/ruby
-# Deploy a database server, two app servers, and a load balancer
 require 'chef/provisioning/docker_driver'
+with_driver 'docker'
 
 # global variables
 chef_env = '_default'
 domain = 'calavera.biz'
 subdomain = "#{domain}"
 
-hname="cerebro"
-machine "#{hname}.#{domain}" do
-
- from_image "#{hname}.#{domain}"
- #recipe  "base::default"
- #recipe  "shared::default"
- #recipe  "java7::default"
- #recipe  "espina::default"
- chef_environment chef_env
-   machine_options :docker_options => {
-    :env => {
-         "HOSTNAME" => "#{hname}.#{domain}"
-      },
-   :volumes => ["/opt/Calavera-chef-provision:/home/vagrant","/opt/Calavera-chef-provision:/home/#{hname}","/opt/Calavera-chef-provision/shared:/mnt/shared"],
-   :command => '/sbin/my_init',
-   :ports => [ "8130:8080","8030:80" ]
- }
+execute "zerohosts" do
+   command "> /opt/Calavera-chef-provision/dnsmasq.hosts/calavera.biz"
 end
 
-hname="espina"
-machine "#{hname}.#{domain}" do
+ports=Hash.new
+ports['cerebro']=[ "8130:8080","8030:80" ]
+ports['brazos']=[ "8131:8080","8031:80" ]
+ports['espina']= [ "8132:8081","8032:80" ]
+ports['hombros']= [ "8133:8080","8033:80" ]
+ports['manos']= [ "8134:8080","8034:80" ]
+ports['cara']= [ "8135:8080","8035:80" ]
 
- from_image "#{hname}.#{domain}"
- recipe  "base::default"
- recipe  "shared::default"
- recipe  "java7::default"
- recipe  "espina::default"
- chef_environment chef_env
-   machine_options :docker_options => {
-    :env => {
-         "HOSTNAME" => "#{hname}.#{domain}"
-      },
-   :volumes => ["/opt/Calavera-chef-provision:/home/vagrant","/opt/Calavera-chef-provision:/home/#{hname}","/opt/Calavera-chef-provision/shared:/mnt/shared"],
-   :command => '/sbin/my_init',
-   :ports => [ "8132:8081","8032:80" ]
- }
+%w{cerebro brazos espina hombros manos cara}.each do |hname|
+
+    machine "#{hname}.#{domain}" do
+     from_image "#{hname}.#{domain}"
+     chef_environment chef_env
+       machine_options :docker_options => {
+        :env => {
+             "HOSTNAME" => "#{hname}.#{domain}"
+          },
+       :volumes => ["/opt/Calavera-chef-provision:/home/vagrant","/opt/Calavera-chef-provision:/home/#{hname}","/opt/Calavera-chef-provision/shared:/mnt/shared"],
+       :command => '/sbin/my_init',
+       :ports => ports[hname]
+     }
+    end
+    
+    execute "getIP#{hname}" do
+       command "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} #{hname}.#{domain} #{hname}' #{hname}.#{domain} >> /opt/Calavera-chef-provision/dnsmasq.hosts/calavera.biz"
+    end
+end
+
+execute "reload dnsmasq" do
+  command "docker kill -s HUP dnsmasq"
 end

@@ -2,16 +2,26 @@
 # Add jenkins to automate deployment
 include_recipe "brazos::default"
 
-execute "apt-get-update-periodic" do
-  command "apt-get update"
-  ignore_failure true
-  #only_if do
-    #File.exists?('/var/lib/apt/periodic/update-success-stamp') &&
-    #File.mtime('/var/lib/apt/periodic/update-success-stamp') < Time.now - 86400
-  #end
-end
+#execute "apt-get-update-periodic" do
+  #command "apt-get update"
+  #ignore_failure true
+  ##only_if do
+    ##File.exists?('/var/lib/apt/periodic/update-success-stamp') &&
+    ##File.mtime('/var/lib/apt/periodic/update-success-stamp') < Time.now - 86400
+  ##end
+#end
 
 package 'tomcat6'
+#For docker phusion images to work
+file "/etc/my_init.d/tomcat6" do
+  content "#!/bin/bash
+export PATH=/usr/lib/jvm/java-7-openjdk-amd64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+/etc/init.d/tomcat6 start || exit 0
+
+"
+  mode '0755'
+end
+
 
 package "wget"
 

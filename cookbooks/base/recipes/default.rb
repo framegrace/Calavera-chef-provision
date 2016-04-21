@@ -4,8 +4,17 @@
 #execute 'apt update' do
 #  command 'apt-get -q update'   
 #end
+execute "apt-get-update-periodic" do
+  command "apt-get update"
+  ignore_failure true
+  #only_if do
+    #File.exists?('/var/lib/apt/periodic/update-success-stamp') &&
+    #File.mtime('/var/lib/apt/periodic/update-success-stamp') < Time.now - 86400
+  #end
+end
 
-include_recipe "java7::default"
+
+#include_recipe "java7::default"
 include_recipe "curl::default"
 
 execute 'install tree' do

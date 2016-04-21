@@ -9,6 +9,7 @@ hname="cerebro"
 machine_image "#{hname}.#{domain}" do
 
  #recipe             "git::default"
+ recipe 	    "base::default"
  recipe             "cerebro::default"
 
  chef_environment chef_env
@@ -31,6 +32,7 @@ end
 hname="brazos"
 machine_image "#{hname}.#{domain}" do
 
+ recipe 	    "base::default"
  recipe             "java7::default"
  recipe             "localAnt::default"
  recipe             "brazos::default"
@@ -81,6 +83,7 @@ end
 hname="hombros"
 machine_image "#{hname}.#{domain}" do
 
+ recipe 	    "base::default"
  recipe               "jenkins::master"
  recipe               "hombros::default"
 
@@ -103,6 +106,7 @@ end
 hname="manos"
 machine_image "#{hname}.#{domain}" do
 
+ recipe 	    "base::default"
  recipe             "localAnt::default"
  recipe             "java7::default"   # for some reason the Java recipe must be re-run to install Tomcat
  recipe             "shared::_junit"
@@ -128,6 +132,7 @@ end
 hname="cara"
 machine_image "#{hname}.#{domain}" do
 
+ recipe 	    "base::default"
  recipe             "java7::default"   # for some reason the Java recipe must be re-run to install Tomcat
  recipe             "cara::default"
 

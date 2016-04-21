@@ -10,6 +10,16 @@ execute "apt-get-update-periodic" do
 end
 
 package 'git'
+package 'tomcat6'
+#For docker phusion images to work
+file "/etc/my_init.d/tomcat6" do
+  content "#!/bin/bash
+export PATH=/usr/lib/jvm/java-7-openjdk-amd64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+/etc/init.d/tomcat6 start || exit 0
+
+"
+  mode '0755'
+end
 
 group 'jenkins'
 
@@ -40,9 +50,10 @@ execute 'correct Jenkins directory ownership' do
             chgrp -R jenkins /home/jenkins'
 end
 
-#execute 'correct tomcat webapps permissions' do
-#  command   'chown -R jenkins /var/lib/tomcat6/webapps &&     \
-#             chgrp -R jenkins /var/lib/tomcat6/webapps'    #
-#end
+execute 'correct tomcat webapps permissions' do
+  command   'chown -R jenkins /var/lib/tomcat6/webapps &&     \
+             chgrp -R jenkins /var/lib/tomcat6/webapps'    #
+end
 
 # when rebuilding brazos it would be nice to let Jenkins know, if Jenkins is running.
+

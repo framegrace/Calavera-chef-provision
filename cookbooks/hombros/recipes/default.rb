@@ -90,4 +90,15 @@ end
 
 jenkins_command 'safe-restart'
 
+#For docker phusion images to work
+file "/etc/my_init.d/tomcat6" do
+  content "#!/bin/bash
+export PATH=/usr/lib/jvm/java-7-openjdk-amd64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+/etc/init.d/jenkins start
+
+"
+  mode '0755'
+end
+
+
 # project name hijoInit
