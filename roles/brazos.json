@@ -1,0 +1,16 @@
+{
+  "name": "brazos",
+  "description": "",
+  "json_class": "Chef::Role",
+  "chef_type": "role",
+  "run_list": [
+ "recipe[base::default]",
+ "recipe[java7::default]",
+ "recipe[localAnt::default]",
+ "recipe[brazos::default]",
+ "recipe[git::default]",
+ "recipe[tomcat::default]",
+ "recipe[shared::_junit]"
+  ]
+}
+

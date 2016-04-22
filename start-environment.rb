@@ -7,6 +7,10 @@ chef_env = '_default'
 domain = 'calavera.biz'
 subdomain = "#{domain}"
 
+execute "restart dnsmasq" do
+  command "/opt/Calavera-chef-provision/dnsmasq-start.sh"
+end
+
 execute "zerohosts" do
    command "> /opt/Calavera-chef-provision/dnsmasq.hosts/calavera.biz"
 end
@@ -20,11 +24,22 @@ ports['manos']= [ "8134:8080","8034:80" ]
 ports['cara']= [ "8135:8080","8035:80" ]
 
 %w{cerebro brazos espina hombros manos cara}.each do |hname|
+#%w{cara}.each do |hname|
 
     machine "#{hname}.#{domain}" do
      from_image "#{hname}.#{domain}"
+     if ( hname.eql?("manos")  or hname.eql?(cara))
+        recipe "#{hname}::run"
+     end
      chef_environment chef_env
        machine_options :docker_options => {
+
+      :base_image => {
+         :name => "#{hname}.#{domain}",
+         :hostname => "#{hname}.#{domain}",
+         :repository => 'phusion'
+     },
+
         :env => {
              "HOSTNAME" => "#{hname}.#{domain}"
           },
@@ -32,13 +47,14 @@ ports['cara']= [ "8135:8080","8035:80" ]
        :command => '/sbin/my_init',
        :ports => ports[hname]
      }
+     #action :ready
     end
     
     execute "getIP#{hname}" do
        command "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} #{hname}.#{domain} #{hname}' #{hname}.#{domain} >> /opt/Calavera-chef-provision/dnsmasq.hosts/calavera.biz"
     end
+    execute "reload dnsmasq" do
+       command "docker kill -s HUP dnsmasq"
+    end
 end
 
-execute "reload dnsmasq" do
-  command "docker kill -s HUP dnsmasq"
-end

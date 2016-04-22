@@ -152,15 +152,15 @@ execute 'register server' do
   command 'ssh-keyscan cerebro >> ~/.ssh/known_hosts'   # prevents interactive dialog
 end
 
-execute 'define remote' do
-  user "hijo"
-  cwd '/home/hijo'
-  environment ({'HOME' => '/home/hijo', 'USER' => 'hijo'})  
-  command 'git remote add origin ssh://cerebro/home/hijo.git'   # define master git server. high priority to make idempotent.
-end
-
-
 # Let's do that on run time
+#execute 'define remote' do
+  #user "hijo"
+  #cwd '/home/hijo'
+  #environment ({'HOME' => '/home/hijo', 'USER' => 'hijo'})  
+  #command 'git remote add origin ssh://cerebro/home/hijo.git'   # define master git server. high priority to make idempotent.
+#end
+
+
 #execute 'push to remote' do
   #user "hijo"
   #cwd '/home/hijo'

@@ -1,0 +1,11 @@
+{
+  "name": "cerebro",
+  "description": "",
+  "json_class": "Chef::Role",
+  "chef_type": "role",
+  "run_list": [
+    "recipe[base::default]",
+    "recipe[cerebro::default]"
+  ]
+}
+

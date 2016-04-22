@@ -20,9 +20,15 @@ include_recipe "curl::default"
 execute 'install tree' do
   command 'apt-get -q install tree'   
 end
-execute "ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N '' -t dsa"
-execute "ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa"
-execute "cp /home/vagrant/shared/keys/id_rsa.pub /root/.ssh/authorized_keys"
+execute "ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N '' -t dsa" do
+     creates "/etc/ssh/ssh_host_dsa_key" 
+end
+execute "ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa" do
+     creates "/etc/ssh/ssh_host_rsa_key" 
+end
+execute "cp /home/vagrant/shared/keys/id_rsa.pub /root/.ssh/authorized_keys" do
+     creates "/root/.ssh/authorized_keys" 
+end
 
 file "/etc/my_init.d/ssh" do
   content "#!/bin/bash

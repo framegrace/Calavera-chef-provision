@@ -4,7 +4,7 @@ maintainer_email 'char@erp4it.com'
 license          'MIT'
 description      'Installs/Configures production server'
 long_description ''
-version          '0.3.0'
+version          '0.4.0'
 
 depends           'tomcat'
 depends           'brazos'
