@@ -5,7 +5,6 @@
   "chef_type": "role",
   "run_list": [
  "recipe[base::default]",
- "recipe[jenkins::master]",
  "recipe[hombros::default]"
   ]
 }

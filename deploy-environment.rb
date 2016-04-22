@@ -1,5 +1,7 @@
 #! /usr/bin/env/ruby
 require 'chef/provisioning/docker_driver'
+with_driver 'docker'
+
 
 chef_env = '_default'
 domain = 'calavera.biz'

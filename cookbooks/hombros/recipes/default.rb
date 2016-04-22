@@ -1,5 +1,24 @@
-# hombros default
-# set up Jenkins server
+## hombros default
+## set up Jenkins server
+#node.default['jenkins']['master']["install_method"]='package'
+##node.default['jenkins']['master']["version"]='1.651.1_all'
+#node.default['jenkins']['master']["version"]='1.651'
+#include_recipe "jenkins::master"
+##package 'jenkins' do
+   #version "1.651.1_all"
+#end
+
+remote_file "/jenkins_1.509.1_all.deb" do
+   source "http://pkg.jenkins-ci.org/debian-stable/binary/jenkins_1.509.1_all.deb"
+end
+
+execute 'isntall jenkins' do
+  command 'dpkg --force-confdef --force-confold -i /jenkins_1.509.1_all.deb'
+end
+
+service 'jenkins' do
+   action :start
+end
 
 directory "/var/lib/jenkins/.ssh"  do
   mode 00755
@@ -17,19 +36,12 @@ execute 'correct Jenkins directory ownership' do
           chgrp -R jenkins /var/lib/jenkins'
 end
 
-# create credential
-
-#jenkins_credentials 'jenkins' do
-#  action :delete
-#end
-
 privkey = File.read("/mnt/shared/keys/id_rsa")
 
 jenkins_private_key_credentials 'jenkins' do
   id '1ea894fc-d69e-4f2e-ba27-30bf66f774b3'  # generated this once upon a time. recommend you generate a new one.
   description 'SSH key'
   private_key privkey
-
 end
 
 # create slave
