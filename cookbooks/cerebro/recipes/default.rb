@@ -11,18 +11,25 @@
 
 package 'git'
 
-group 'git'
+group 'vagrant' do
+  gid '1000'
+end
+group 'git' do
+  gid '1003'
+end
 
-group 'jenkins'
+group 'jenkins' 
 
-user 'git' do
+user 'vagrant' do
   group 'git'
+  uid '1000'
   password "*"
   action [:create,:unlock]
 end
 
-user 'vagrant' do
+user 'git' do
   group 'git'
+  uid '1003'
   password "*"
   action [:create,:unlock]
 end
@@ -59,6 +66,8 @@ execute 'correct Jenkins ssh files ownership' do
   command 'chown -R jenkins /home/jenkins &&  \
           chgrp -R jenkins /home/jenkins'  
 end
+
+   
 
 execute 'init git' do
   user "git"

@@ -6,150 +6,67 @@ chef_env = '_default'
 domain = 'calavera.biz'
 subdomain = "#{domain}"
 
-#hname="cerebro"
 %w{cerebro brazos espina hombros manos cara}.each do |hname|
-machine_image "#{hname}.#{domain}" do
+    machine_image "#{hname}.#{domain}" do
 
- role   "#{hname}" 
+     role   "#{hname}" 
 
- chef_environment chef_env
-   machine_options :docker_options => {
-     :base_image => {
-         :name => 'phusion/baseimage',
+     chef_environment chef_env
+       machine_options :docker_options => {
+         :base_image => {
+             :name => 'phusion/baseimage',
+             :hostname => "#{hname}.#{domain}",
+             :repository => 'phusion',
+             :tag => '0.9.16',
+         },
+        :env => {
+             "HOSTNAME" => "#{hname}.#{domain}"
+          },
+       :volumes => ["/opt/Calavera-chef-provision:/home/vagrant","/opt/Calavera-chef-provision:/home/#{hname}","/opt/Calavera-chef-provision/shared:/mnt/shared"],
+       :command => '/sbin/my_init'
+     }
+    end
+end
+
+ports=Hash.new
+ports['cerebro']=[ "8130:8080","8030:80" ]
+ports['brazos']=[ "8131:8080","8031:80" ]
+ports['espina']= [ "8132:8081","8032:80" ]
+ports['hombros']= [ "8133:8080","8033:80" ]
+ports['manos']= [ "8134:8080","8034:80" ]
+ports['cara']= [ "8135:8080","8035:80" ]
+
+# Start to do one time initialization
+%w{cerebro brazos espina hombros manos cara}.each do |hname|
+#%w{cara}.each do |hname|
+
+    machine "#{hname}.#{domain}" do
+     #from_image "#{hname}.#{domain}"
+     if ( hname.eql?("manos")  or hname.eql?("cara"))
+        recipe "#{hname}::run"
+     end
+     chef_environment chef_env
+       machine_options :docker_options => {
+
+      :base_image => {
+         :name => "#{hname}.#{domain}",
          :hostname => "#{hname}.#{domain}",
-         :repository => 'phusion',
-         :tag => '0.9.16',
+         :repository => 'phusion'
      },
-    :env => {
-         "HOSTNAME" => "#{hname}.#{domain}"
-      },
-   :volumes => ["/opt/Calavera-chef-provision:/home/vagrant","/opt/Calavera-chef-provision:/home/#{hname}","/opt/Calavera-chef-provision/shared:/mnt/shared"],
-   :command => '/sbin/my_init'
- }
- #action :destroy
-end
-end
 
-#hname="brazos"
-#machine_image "#{hname}.#{domain}" do
-#
- #recipe 	    "base::default"
- #recipe             "java7::default"
- #recipe             "localAnt::default"
- #recipe             "brazos::default"
- #recipe             "git::default"
- #recipe             "tomcat::default"
- #recipe             "shared::_junit"
-#
- #chef_environment chef_env
-   #machine_options :docker_options => {
-     #:base_image => {
-         #:name => 'phusion/baseimage',
-         #:hostname => "#{hname}.#{domain}",
-         #:repository => 'phusion',
-         #:tag => '0.9.16',
-     #},
-    #:env => {
-         #"HOSTNAME" => "#{hname}.#{domain}"
-      #},
-   #:volumes => ["/opt/Calavera-chef-provision:/home/vagrant","/opt/Calavera-chef-provision:/home/#{hname}","/opt/Calavera-chef-provision/shared:/mnt/shared"],
-   #:command => '/sbin/my_init'
- #}
-#end
-#
-#
-#hname="espina"
-#machine_image "#{hname}.#{domain}" do
-#
- #recipe  "base::default"
- #recipe  "shared::default"
- #recipe  "java7::default"
- #recipe  "espina::default"
- #chef_environment chef_env
-   #machine_options :docker_options => {
-     #:base_image => {
-         #:name => 'phusion/baseimage',
-         #:hostname => "#{hname}.#{domain}",
-         #:repository => 'phusion',
-         #:tag => '0.9.16',
-     #},
-    #:env => {
-         #"HOSTNAME" => "#{hname}.#{domain}"
-      #},
-   #:volumes => ["/opt/Calavera-chef-provision:/home/vagrant","/opt/Calavera-chef-provision:/home/#{hname}","/opt/Calavera-chef-provision/shared:/mnt/shared"],
-   #:command => '/sbin/my_init'
- #}
-#end
-#
-#hname="hombros"
-#machine_image "#{hname}.#{domain}" do
-#
- #recipe 	    "base::default"
- #recipe               "jenkins::master"
- #recipe               "hombros::default"
-#
- #chef_environment chef_env
-   #machine_options :docker_options => {
-     #:base_image => {
-         #:name => 'phusion/baseimage',
-         #:hostname => "#{hname}.#{domain}",
-         #:repository => 'phusion',
-         #:tag => '0.9.16',
-     #},
-    #:env => {
-         #"HOSTNAME" => "#{hname}.#{domain}"
-      #},
-   #:volumes => ["/opt/Calavera-chef-provision:/home/vagrant","/opt/Calavera-chef-provision:/home/#{hname}","/opt/Calavera-chef-provision/shared:/mnt/shared"],
-   #:command => '/sbin/my_init'
- #}
-#end
-#
-#hname="manos"
-#machine_image "#{hname}.#{domain}" do
-#
- #recipe 	    "base::default"
- #recipe             "localAnt::default"
- #recipe             "java7::default"   # for some reason the Java recipe must be re-run to install Tomcat
- #recipe             "shared::_junit"
- #recipe             "manos::default"
-#
- #chef_environment chef_env
-   #machine_options :docker_options => {
-     #:base_image => {
-         #:name => 'phusion/baseimage',
-         #:hostname => "#{hname}.#{domain}",
-         #:repository => 'phusion',
-         #:tag => '0.9.16',
-     #},
-    #:env => {
-         #"HOSTNAME" => "#{hname}.#{domain}"
-      #},
-   #:volumes => ["/opt/Calavera-chef-provision:/home/vagrant","/opt/Calavera-chef-provision:/home/#{hname}","/opt/Calavera-chef-provision/shared:/mnt/shared"],
-   #:command => '/sbin/my_init'
- #}
- ##action :destroy
-#end
-#
-#hname="cara"
-#machine_image "#{hname}.#{domain}" do
-#
- #recipe 	    "base::default"
- #recipe             "java7::default"   # for some reason the Java recipe must be re-run to install Tomcat
- #recipe             "cara::default"
-#
- #chef_environment chef_env
-   #machine_options :docker_options => {
-     #:base_image => {
-         #:name => 'phusion/baseimage',
-         #:hostname => "#{hname}.#{domain}",
-         #:repository => 'phusion',
-         #:tag => '0.9.16',
-     #},
-    #:env => {
-         #"HOSTNAME" => "#{hname}.#{domain}"
-      #},
-   #:volumes => ["/opt/Calavera-chef-provision:/home/vagrant","/opt/Calavera-chef-provision:/home/#{hname}","/opt/Calavera-chef-provision/shared:/mnt/shared"],
-   #:command => '/sbin/my_init'
- #}
- ##action :destroy
-##end
+        :env => {
+             "HOSTNAME" => "#{hname}.#{domain}"
+          },
+       :volumes => ["/opt/Calavera-chef-provision:/home/vagrant","/opt/Calavera-chef-provision:/home/#{hname}","/opt/Calavera-chef-provision/shared:/mnt/shared"],
+       :command => '/sbin/my_init',
+       :ports => ports[hname]
+     }
+    end
+
+    execute "getIP#{hname}" do
+       command "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} #{hname}.#{domain} #{hname}' #{hname}.#{domain} >> /opt/Calavera-chef-provision/dnsmasq.hosts/calavera.biz"
+    end
+    execute "reload dnsmasq" do
+       command "docker kill -s HUP dnsmasq"
+    end
+end

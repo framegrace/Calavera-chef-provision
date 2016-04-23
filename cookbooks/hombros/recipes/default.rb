@@ -1,19 +1,20 @@
 ## hombros default
 ## set up Jenkins server
 #node.default['jenkins']['master']["install_method"]='package'
-##node.default['jenkins']['master']["version"]='1.651.1_all'
+#node.default['jenkins']['master']["version"]='1.651.1'
 #node.default['jenkins']['master']["version"]='1.651'
 #include_recipe "jenkins::master"
 ##package 'jenkins' do
    #version "1.651.1_all"
 #end
 
-remote_file "/jenkins_1.509.1_all.deb" do
-   source "http://pkg.jenkins-ci.org/debian-stable/binary/jenkins_1.509.1_all.deb"
+remote_file "/jenkins_1.651.1_all.deb" do
+   source "http://pkg.jenkins-ci.org/debian-stable/binary/jenkins_1.651.1_all.deb"
 end
 
+package 'daemon'
 execute 'isntall jenkins' do
-  command 'dpkg --force-confdef --force-confold -i /jenkins_1.509.1_all.deb'
+  command 'dpkg --force-confdef --force-confold -i /jenkins_1.651.1_all.deb'
 end
 
 service 'jenkins' do

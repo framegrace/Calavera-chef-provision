@@ -27,10 +27,10 @@ ports['cara']= [ "8135:8080","8035:80" ]
 #%w{cara}.each do |hname|
 
     machine "#{hname}.#{domain}" do
-     from_image "#{hname}.#{domain}"
-     if ( hname.eql?("manos")  or hname.eql?(cara))
-        recipe "#{hname}::run"
-     end
+     #from_image "#{hname}.#{domain}"
+     #if ( hname.eql?("manos")  or hname.eql?(cara))
+        #recipe "#{hname}::run"
+     #end
      chef_environment chef_env
        machine_options :docker_options => {
 
@@ -47,7 +47,6 @@ ports['cara']= [ "8135:8080","8035:80" ]
        :command => '/sbin/my_init',
        :ports => ports[hname]
      }
-     #action :ready
     end
     
     execute "getIP#{hname}" do

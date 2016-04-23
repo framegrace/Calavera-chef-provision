@@ -11,7 +11,7 @@ execute "zerohosts" do
    command "> /opt/Calavera-chef-provision/dnsmasq.hosts/calavera.biz"
 end
 
-%w{cerebro espina cara}.each do |hname|
+%w{cerebro brazos espina hombros manos cara}.each do |hname|
 
     machine "#{hname}.#{domain}" do
       action :destroy

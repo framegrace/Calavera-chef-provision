@@ -1,0 +1,2 @@
+copy shared/keys/* to .ssh/
+Chown ./ssh to 1000:1003

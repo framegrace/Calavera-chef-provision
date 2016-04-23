@@ -33,15 +33,21 @@ end
 
 package "tree"
 
-group 'git'
-group 'vagrant'
+group 'vagrant' do
+  gid '1000'
+end
+group 'git' do
+  gid '1003'
+end
 
 user 'vagrant' do
   group 'git'
+  uid '1000'
   password '*'
 end
 
 user 'hijo' do
+  uid '1005'
   group 'git'
   password '*'
 end
@@ -55,7 +61,7 @@ end
   directory name  do
     mode 00775
     action :create
-    user "hijo"
+    user "vagrant"
     group "git"
     recursive true
   end
@@ -74,7 +80,7 @@ file_map = {
 file_map.each do | fileName, pathName |
   cookbook_file fileName do
     path pathName
-    user "hijo"
+    user "vagrant"
     group "git"
     action :create
   end
@@ -89,72 +95,72 @@ cookbook_file '/etc/sudoers.d/hijo' do
 end
 
 execute 'correct dev directory permissions' do
-  command 'chown -R hijo /home/hijo/ && chgrp -R git /home/hijo/'          # Chef does not have an easy way to do this. 
+  command 'chown -R vagrant /home/hijo/ && chgrp -R git /home/hijo/'          # Chef does not have an easy way to do this. 
 end
 
 execute 'correct tomcat webapps permissions' do
-  command   'chown -R hijo /var/lib/tomcat6/webapps/ && chgrp -R vagrant /var/lib/tomcat6/webapps/'    #
+  command   'chown -R vagrant /var/lib/tomcat6/webapps/ && chgrp -R vagrant /var/lib/tomcat6/webapps/'    #
 end
 
-execute 'initial build & dev deploy' do
-  user "hijo"
-  group "git"
-  cwd '/home/hijo'
-  command 'ant'
-end
-
-execute 'initialize git 1' do
-  user "hijo"
-  group "git"
-  cwd '/home/hijo'
-  environment ({'HOME' => '/home/hijo', 'USER' => 'hijo'})  
-  command 'git config --global user.email "char@calavera.biz"'   # needs to be idempotent. can we do this through git cookbook?
-end
-
-execute 'initialize git 2' do
-  user "hijo"
-  group "git"
-  cwd '/home/hijo'
-  environment ({'HOME' => '/home/hijo', 'USER' => 'hijo'})  
-  command 'git config --global user.name "Charles Betz"'   # needs to be idempotent. can we do this through git cookbook?
-end
-
-execute 'initialize git 3' do
-  user "hijo"
-  group "git"
-  cwd '/home/hijo'
-  environment ({'HOME' => '/home/hijo', 'USER' => 'hijo'})  
-  command 'git init /home/hijo'   # needs to be idempotent. can we do this through git cookbook?
-end
-
-execute 'initialize git 4' do
-  user "hijo"
-  group "git"
-  cwd '/home/hijo'
-  environment ({'HOME' => '/home/hijo', 'USER' => 'hijo'})  
-  command 'git add .'   # needs to be idempotent
-end
-
-execute 'initialize git 5' do
-  user "hijo"
-  group "git"
-  cwd '/home/hijo'
-  ignore_failure true
-  environment ({'HOME' => '/home/hijo', 'USER' => 'hijo'})  
-  command 'git commit -m "initial commit"'   # needs to be idempotent
-end
-
-execute 'register server' do
-  user "hijo"
-  group "git"
-  cwd '/home/hijo'
-  environment ({'HOME' => '/home/hijo', 'USER' => 'hijo'})  
-  command 'ssh-keyscan cerebro >> ~/.ssh/known_hosts'   # prevents interactive dialog
-end
+#execute 'initial build & dev deploy' do
+  #user "vagrant"
+  #group "git"
+  #cwd '/home/hijo'
+  #command 'ant'
+#end
+#
+#execute 'initialize git 1' do
+  #user "vagrant"
+  #group "git"
+  #cwd '/home/hijo'
+  #environment ({'HOME' => '/home/hijo', 'USER' => 'hijo'})  
+  #command 'git config --global user.email "char@calavera.biz"'   # needs to be idempotent. can we do this through git cookbook?
+#end
+#
+#execute 'initialize git 2' do
+  #user "vagrant"
+  #group "git"
+  #cwd '/home/hijo'
+  #environment ({'HOME' => '/home/hijo', 'USER' => 'hijo'})  
+  #command 'git config --global user.name "Charles Betz"'   # needs to be idempotent. can we do this through git cookbook?
+#end
+#
+#execute 'initialize git 3' do
+  #user "vagrant"
+  #group "git"
+  #cwd '/home/hijo'
+  #environment ({'HOME' => '/home/hijo', 'USER' => 'hijo'})  
+  #command 'git init /home/hijo'   # needs to be idempotent. can we do this through git cookbook?
+#end
+#
+#execute 'initialize git 4' do
+  ##user "vagrant"
+  #group "git"
+  #cwd '/home/hijo'
+  #environment ({'HOME' => '/home/hijo', 'USER' => 'hijo'})  
+  #command 'git add .'   # needs to be idempotent
+#end
+#
+#execute 'initialize git 5' do
+  #user "vagrant"
+  #group "git"
+  #cwd '/home/hijo'
+  #ignore_failure true
+  #environment ({'HOME' => '/home/hijo', 'USER' => 'hijo'})  
+  #command 'git commit -m "initial commit"'   # needs to be idempotent
+#end
+#
+#execute 'register server' do
+  #user "vagrant"
+  #group "git"
+  #cwd '/home/hijo'
+  #environment ({'HOME' => '/home/hijo', 'USER' => 'hijo'})  
+  #command 'ssh-keyscan cerebro >> ~/.ssh/known_hosts'   # prevents interactive dialog
+#end
 
 # Let's do that on run time
 #execute 'define remote' do
-  #user "hijo"
+  #user "vagrant"
   #cwd '/home/hijo'
   #environment ({'HOME' => '/home/hijo', 'USER' => 'hijo'})  
   #command 'git remote add origin ssh://cerebro/home/hijo.git'   # define master git server. high priority to make idempotent.
