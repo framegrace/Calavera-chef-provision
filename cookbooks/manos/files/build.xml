@@ -134,8 +134,8 @@
 		</exec-->
 		
 		<!-- deprecated -->		
-		<exec command="service tomcat6 stop"/>		
-		<exec command="service tomcat6 start"/>
+		<exec command="sudo service tomcat6 stop"/>		
+		<exec command="sudo service tomcat6 start"/>
 	
 	</target>
 

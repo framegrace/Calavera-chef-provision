@@ -1,1 +1,1 @@
-hijo ALL=NOPASSWD: ALL
+vagrant ALL=NOPASSWD: ALL
