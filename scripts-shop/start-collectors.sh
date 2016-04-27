@@ -4,4 +4,3 @@ ssh espina "apt-get -y install collectl;killall collectl;nohup collectl --export
 ssh hombros "apt-get -y install collectl;killall collectl;nohup collectl --export graphite,monitor.calavera.biz >/dev/null 2>&1 &"
 ssh cerebro "apt-get -y install collectl;killall collectl;nohup collectl --export graphite,monitor.calavera.biz >/dev/null 2>&1 &"
 ssh brazos "apt-get -y install collectl;killall collectl;nohup collectl --export graphite,monitor.calavera.biz >/dev/null 2>&1 &"
-scp /opt/Calavera-chef-provision/scripts-shop/send-statsd-notification.sh brazos:/usr/local/bin/
