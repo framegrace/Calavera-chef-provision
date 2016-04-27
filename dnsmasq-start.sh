@@ -13,3 +13,4 @@ docker stop dnsmasq
 docker rm dnsmasq
 docker run -v="$(pwd)/dnsmasq.hosts:/dnsmasq.hosts" --name=${name} -p=${MY_IP}':53:5353/udp' -d sroegner/dnsmasq > /tmp/out 2>&1
 echo "-- Dnsmasq created"
+sleep 10
