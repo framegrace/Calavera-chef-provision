@@ -8,3 +8,4 @@ curl -O 'http://espina:8081/artifactory/ext-snapshot-local/Calavera/target/web.x
 cp target/web.xml src/main/config
 popd
 curl -O 'http://espina:8081/artifactory/ext-snapshot-local/Calavera/build.xml'
+curl -O 'http://espina:8081/artifactory/ext-snapshot-local/Calavera/jmeter.jmx'
