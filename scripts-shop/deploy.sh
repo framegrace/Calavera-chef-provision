@@ -5,4 +5,5 @@ wget "http://espina:8081/artifactory/simple/ext-release-local/Calavera/target/Ca
 cd /var/lib/tomcat6/webapps/ROOT/WEB-INF/
 rm web.xml*
 wget "http://espina:8081/artifactory/simple/ext-release-local/Calavera/target/web.xml" -O web.xml
-sudo /etc/init.d/tomcat6 restart
+sudo /etc/init.d/tomcat6 stop || echo "OK"
+sudo /etc/init.d/tomcat6 start || echo "OK"

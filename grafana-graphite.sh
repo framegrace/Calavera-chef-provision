@@ -1,4 +1,5 @@
 export CALAVERA_HOME="/opt/Calavera-chef-provision"
+> ${CALAVERA_HOME}/dnsmasq.hosts/grafana
 NODE=monitor
 docker run \
   --detach \
