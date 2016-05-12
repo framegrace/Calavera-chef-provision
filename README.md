@@ -23,14 +23,5 @@ Installation instructions
 - Copy your SSH keys to the shared/keys directory (if you don't have those keys, run 
   - ``ssh-keygen -t rsa`` 
 and then copy the contents of $HOME/.ssh to the shared/keys directory
-- First time build the Calavera machines with:
-  - `` ./calavera.build.sh ``
-  - Every time you run this script, all the nodes will be destroyed and purged. So just use it when you want to initialize or to completelly clean the environment.
-- You can handle the nodes "brazos","espina",etc... with normal vagrant commands.
-- Everytime you want to re/start the environment, use:
-  - ``./calavera.startup.sh`` 
-  - This will make the environment up and running in case it was in an unstabe state.
-- Be careful with your DNS settings. As stated here ( http://stackoverflow.com/questions/23012273/setting-up-docker-dnsmasq) When using the dnsmasq container, it's important to keep in mind that it will use the information in the ``/etc/resolv.conf`` of the host system and that content is usually a dynamic configuration. You will need that the DNS server points to the local IP@ where the docker dnsmasq server is bound (usually eth0). So you shoud:
-  - Set up the ``/etc/resolv.conf`` file adding a line that says ``nameserver 172.16.251.151``
-  - ``sudo docker stop dnsmasq``
-  - ``sudo docker start dnsmasq``
+- Build the Calavera environment running (as root)
+  - ``create-environment.sh`` 
