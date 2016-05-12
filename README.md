@@ -11,6 +11,8 @@ Installation instructions
   - ``sudo apt-get install build-essential ``
 - Install chef-dk from [here] (https://downloads.chef.io/chef-dk/). This includes berkshelf, needed for the provision. Install it with:
   - `` sudo dpkg -i chefdk_0.6.2-1_amd64.deb ``
+- Install berkshelf for provision with:
+  - `` sudo chef gem install berkshelf ``
 - Install the vagrant-berkshelf plugin
   - ``vagrant plugin install vagrant-berkshelf `` 
 - Clone this repo on some dir. And, as "root" user go inside the Calavera repo. (All environment handling must be done as root)
