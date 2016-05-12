@@ -15,7 +15,7 @@ Installation instructions
   - `` sudo chef gem install berkshelf ``
 - Install the vagrant-berkshelf plugin
   - ``vagrant plugin install vagrant-berkshelf `` 
-- Clone this repo on some dir. And, as "root" user go inside the Calavera repo. (All environment handling must be done as root)
+- Clone this repo on /opt. And, as "root" user go inside the Calavera repo. (All environment handling must be done as root)
   - ``git clone <clone_url_for_this_repo>``
 - Copy your SSH keys to the shared/keys directory (if you don't have those keys, run 
   - ``ssh-keygen -t rsa`` 
