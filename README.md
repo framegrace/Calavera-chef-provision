@@ -25,5 +25,9 @@ Installation instructions
 - Copy your SSH keys to the shared/keys directory (if you don't have those keys, run 
   - ``ssh-keygen -t rsa`` 
 and then copy the contents of $HOME/.ssh to the shared/keys directory
+- Confirm shared/ umas running (as root)
+  - ``chmod -R ga+rw shared/* ``
+- Run dnsmasq server
+  - ``dnsmasq-start.sh ``
 - Build the Calavera environment running (as root)
   - ``create-environment.sh`` 
