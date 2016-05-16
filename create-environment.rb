@@ -42,7 +42,7 @@ ports['cara']= [ "8135:8080","8035:80" ]
 
     machine "#{hname}.#{domain}" do
      #from_image "#{hname}.#{domain}"
-     if ( hname.eql?("manos2")  or hname.eql?("cara"))
+     if ( hname.eql?("manos")  or hname.eql?("cara"))
         recipe "#{hname}::run"
      end
      chef_environment chef_env
